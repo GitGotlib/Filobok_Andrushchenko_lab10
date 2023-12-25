@@ -13,15 +13,10 @@ void matrix(Pole *dane) { // pole w postaci 0 i 1 dla programowania ruchu, gdzie
 
         for( i = 0; i < dane->w; i++) {
 	                 dane->v[i] = (int *)malloc(dane->k * sizeof(int));
+			 for(j = 0; j < dane->k; j++) {
+				 dane->v[i][j] = 0; 
+			 }
 	         }
-        for(i = 0; i < dane->w; i++) {
-                printf("\n");
-                for(j = 0; j < dane->k; j++) {
-	                        dane->v[i][j] = 0;
-		                        printf("%d", dane->v[i][j]);
-			                }
-        }
-        printf("\n");
 }	
 void ppole(Pole *dane) {
 	int i, j;
@@ -33,9 +28,8 @@ void ppole(Pole *dane) {
 	for (i = 0; i < dane->w - 1; i++) {
 		printf("|");
 		for (j = 0; j < dane->k; j++) {
-			if(i == (dane->w / 2) && j == (dane->k / 2)) {
+			if(i == (dane->w / 2) - 1 && j == (dane->k / 2) - 1) {
 				dane->v[i][j] = 1;
-				j++;
 				if (strcmp(dane->kier, "r") == 0) {
 					    printf(ANSI_BACKGROUND_WHITE ">"ANSI_RESET ANSI_GREEN_TEXT );
 				} else if (strcmp(dane->kier, "b") == 0) {
@@ -46,10 +40,11 @@ void ppole(Pole *dane) {
 					    printf("^");
 				} else {
 					    fprintf(stderr, "Błąd w zaznaczeniu kierunku");
+				} 
+		
+			} else {
+					printf(" ");
 				}
-			}
-
-		printf(" ");
 		}
 		printf("|\n");
 	}
@@ -61,7 +56,6 @@ void ppole(Pole *dane) {
 	        for(i = 0; i < dane->w; i++) {
 			printf("\n");
 	                for(j = 0; j < dane->k; j++) {
-                                dane->v[i][j] = 0;
                                 printf("%d", dane->v[i][j]);
 			}
 		}
