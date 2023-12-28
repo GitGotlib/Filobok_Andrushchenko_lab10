@@ -10,7 +10,7 @@ typedef struct _Pole {
 	int x, y; //współrzędne dla wyznaczenia położenia mrówki
 	int **v;
 } Pole;
-
-void ppole(Pole *dane);
 void matrix(Pole *dane);
+void ppole(Pole *dane);
+void move(Pole *dane);
 #endif

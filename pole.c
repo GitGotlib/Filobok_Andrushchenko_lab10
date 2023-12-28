@@ -20,45 +20,79 @@ void matrix(Pole *dane) { // pole w postaci 0 i 1 dla programowania ruchu, gdzie
 }	
 void ppole(Pole *dane) {
 	int i, j;
+	int *idi, *idj; // wskażnik dla i oraz j ( id i ) itd.
 	printf(ANSI_GREEN_TEXT " ");
 	for (i = 0; i < dane->k; i++) {
 		printf("_");
 	}
 	printf("\n");
-	for (i = 0; i < dane->w - 1; i++) {
+	for (i = 0; i < dane->w; i++) {
 		printf("|");
 		for (j = 0; j < dane->k; j++) {
-			if(i == (dane->w / 2) - 1 && j == (dane->k / 2) - 1) {
-				dane->v[i][j] = 1;
-				if (strcmp(dane->kier, "r") == 0) {
-					    printf(ANSI_BACKGROUND_WHITE ">"ANSI_RESET ANSI_GREEN_TEXT );
-				} else if (strcmp(dane->kier, "b") == 0) {
-					    printf("V");
-				} else if (strcmp(dane->kier, "l") == 0) {
-					    printf("<");
-				} else if (strcmp(dane->kier, "u") == 0) {
-					    printf("^");
-				} else {
-					    fprintf(stderr, "Błąd w zaznaczeniu kierunku");
-				} 
-		
+			if(i == dane->y && j == dane->x) {
+				j++;
+				idi = &i;
+				idj = &j;
+				move(dane);
+				goto next;		
 			} else {
-					printf(" ");
+				if (dane->v[i][j] == 0) {	
+					printf(ANSI_BACKGROUND_BLACK " "ANSI_RESET ANSI_GREEN_TEXT );
 				}
+				else if (dane->v[i][j] == 1) {
+					 printf(ANSI_BACKGROUND_WHITE " "ANSI_RESET ANSI_GREEN_TEXT ); 
+				}
+				else {
+					fprintf(stderr, "Błąd w macierzy");
+				}
+			}
 		}
 		printf("|\n");
 	}
-		printf("|");
+	next: {
+		      for (j = *idj; j < dane->k; j++) {
+			      i = *idi;
+			      if (dane->v[i][j] == 0) {
+				      printf(ANSI_BACKGROUND_BLACK " "ANSI_RESET ANSI_GREEN_TEXT );
+			      }
+			      else if (dane->v[i][j] == 1) {
+				      printf(ANSI_BACKGROUND_WHITE " "ANSI_RESET ANSI_GREEN_TEXT );
+			      }
+			      else {
+				      fprintf(stderr, "Błąd w macierzy");
+			      }
+		      }
+		      printf("|\n");
+		      i++;
+		      idi = &i;
+	        for (i = *idi; i < dane->w; i++) {
+			printf("|");
+			for (j = 0; j < dane->k; j++) {
+				if (dane->v[i][j] == 0) {
+					printf(ANSI_BACKGROUND_BLACK " "ANSI_RESET ANSI_GREEN_TEXT );
+					}
+				else if (dane->v[i][j] == 1) {
+					printf(ANSI_BACKGROUND_WHITE " "ANSI_RESET ANSI_GREEN_TEXT );
+				}
+				else {
+					fprintf(stderr, "Błąd w macierzy");
+				}
+			}
+			printf("|\n");
+		}
+	      }
+
+	printf(" ");
 	for (i = 0; i < dane->k; i++) {
-		printf("_");
-	};
-	printf("|\n" ANSI_RESET);
-	        for(i = 0; i < dane->w; i++) {
+		printf("-");
+	}
+	printf("\n" ANSI_RESET);
+/*	        for(i = 0; i < dane->w; i++) {
 			printf("\n");
 	                for(j = 0; j < dane->k; j++) {
                                 printf("%d", dane->v[i][j]);
 			}
 		}
-		printf("\n");
+		printf("\n");*/
 }
 
