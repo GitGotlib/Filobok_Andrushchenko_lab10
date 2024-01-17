@@ -14,28 +14,40 @@ void move(Pole *dane) {
 			printf(ANSI_BACKGROUND_BLACK ANSI_GREEN_TEXT ">"ANSI_RESET );
 			strcpy(buf, "b");
 			strcpy(dane->kier, buf);
-			dane->x += 1;
+			if(dane->y == dane->w - 1) {
+				dane->y = 0;
+			} else {
+			dane->y += 1; }
 			return;
 		}
 		else if(strcmp(dane->kier, "b") == 0) {
-			printf(ANSI_BACKGROUND_BLACK ANSI_GREEN_TEXT "v"ANSI_RESET );
+		 	printf(ANSI_BACKGROUND_BLACK ANSI_GREEN_TEXT "v"ANSI_RESET );
 			strcpy(buf, "l");
 			strcpy(dane->kier, buf);
-			dane->y += 1;
+			if(dane->x == 0) {
+				dane->x = dane->k - 1;
+			} else {
+			dane->x -= 1; }
 			return;
 		}
 		else if(strcmp(dane->kier, "l") == 0) {
 			printf(ANSI_BACKGROUND_BLACK ANSI_GREEN_TEXT "<"ANSI_RESET );
 			strcpy(buf, "u");
 			strcpy(dane->kier, buf);
-			dane->x -= 1;
+			if(dane->y == 0) {
+				dane->y = dane->w - 1;
+			} else {
+			dane->y -= 1; }
 			return;
 		}	
 		else if(strcmp(dane->kier, "u") == 0) {
 			printf(ANSI_BACKGROUND_BLACK ANSI_GREEN_TEXT "^"ANSI_RESET );
 			strcpy(buf, "r");
 			strcpy(dane->kier, buf);
-			dane->y -= 1;
+			if(dane->x == dane->k - 1) {
+				dane->x = 0;
+			} else {
+			dane->x += 1; }
 			return;
 		}
 		else { 
@@ -48,28 +60,43 @@ void move(Pole *dane) {
 				printf(ANSI_BACKGROUND_WHITE ANSI_GREEN_TEXT ">"ANSI_RESET );
 				strcpy(buf, "u");
 				strcpy(dane->kier, buf);
-				dane->x += 1;
+				if(dane->y == 0) {
+					dane->y = dane->w - 1;
+				} else {
+				dane->y -= 1; }
 				return;
 			}
 			else if(strcmp(dane->kier, "u") == 0) {
 				printf(ANSI_BACKGROUND_WHITE ANSI_GREEN_TEXT "^"ANSI_RESET );
 				strcpy(buf, "l");
 				strcpy(dane->kier, buf);
-				dane->y -= 1;
+				if(dane->x == 0) {
+					dane->x = dane->k - 1;
+				} else {
+				dane->x -= 1;
+				}
 				return;
 			}
 			else if(strcmp(dane->kier, "l") == 0) {
 				printf(ANSI_BACKGROUND_WHITE ANSI_GREEN_TEXT "<"ANSI_RESET );
 				strcpy(buf, "b");
 				strcpy(dane->kier, buf);
-				dane->x -= 1;
+				if(dane->y == dane->w - 1) {
+					dane->y = 0;
+				} else {
+				dane->y += 1;
+				}
 				return;
 			}
 			else if(strcmp(dane->kier, "b") == 0) {
 				printf(ANSI_BACKGROUND_WHITE ANSI_GREEN_TEXT "v"ANSI_RESET );
 				strcpy(buf, "r");
 				strcpy(dane->kier, buf);
-				dane->y += 1;
+				if(dane->x == dane->k - 1) {
+					dane->x = 0;
+				} else {
+					dane->x += 1;
+				}
 				return;
 			}
 			else {

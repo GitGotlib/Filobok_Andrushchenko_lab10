@@ -13,4 +13,5 @@ typedef struct _Pole {
 void matrix(Pole *dane);
 void ppole(Pole *dane);
 void move(Pole *dane);
+void pm1x1(int il);
 #endif
