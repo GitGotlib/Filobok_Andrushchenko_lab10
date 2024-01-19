@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "pole.h"
 int main(int argc, char **argv) {
 	Pole *dane = malloc(sizeof(Pole));
@@ -9,12 +10,35 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "Błęd wydzielenia pamięci\n");
 			return 1;
 	}
+	int opt;
+	while ((opt = getopt(argc, argv, "k:w:i:r:o:")) != -1) {
+		switch (opt) {
+			case 'k':
+				dane->k = atoi(optarg);
+				break;
+			case 'w':
+				dane->w = atoi(optarg);
+				break;
+			case 'i':
+				dane->il = atoi(optarg);
+				break;
+			case 'r':
+				dane->kier = strdup(optarg);
+				break;
+			case 'o':
+				dane->opcja = strdup(optarg);
+				break;
+			default:
+				fprintf(stderr, "Niepoprawnie wprowadzanie argumentów.\n Poprawne użycie: %s -k K -w W -i I -d D -o O\n", argv[0]);
+				return 1;
+		}
+	}
+	if (dane->k == 0) dane->k = 10; //ustawienie liczby kolumn
+	if (dane->w == 0) dane->w = 10; //ustawienie liczby wierszów
+	if (dane->il == 0) dane->il = 20; //ilość kroków
+	if (dane->kier == NULL) dane->kier = strdup("r"); //ustawienie kierunku r -right itd.
+	if (dane->opcja == NULL) dane->opcja = strdup("los"); // użytkownik wybiera opcje: dodać swój plik do wczytania pola, lub zainicjować losowy
 
-	dane->k = argc > 1 ? atoi(argv[1]) : 10; //ustawienie liczby kolumn
-	dane->w = argc > 2 ? atoi(argv[2]) : 10; //wiersz
-	dane->il = argc > 3 ? atoi(argv[3]) : 20; //ilość kroków
-	dane->kier = argc > 4 ? strdup(argv[4]) : strdup("r"); //ustawienie kierunku r -right itd.
-	dane->opcja = argc > 5 ? strdup(argv[5]) : strdup("los"); // użytkownik wybiera opcje: dodać swój plik do wczytania pola, lub zainicjować losowy	
 	int il;
 	if(dane->k == 1 || dane->w == 1) {
 		il = dane->il;       
