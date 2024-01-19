@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #define ANSI_GREEN_TEXT       "\x1b[32m"
 #define ANSI_BACKGROUND_BLACK "\x1b[30m"
 #define ANSI_BACKGROUND_WHITE "\x1b[47m"
@@ -17,9 +18,47 @@ void matrix(Pole *dane) { // pole w postaci 0 i 1 dla programowania ruchu, gdzie
 				 dane->v[i][j] = 0; 
 			 }
 	         }
-}	
-void ppole(Pole *dane) {
+}
+
+int randomp()
+{
+	srand(clock());
+	int r = 2*((double)rand()/RAND_MAX);
+	return r;
+}
+
+void matrixrand(Pole *dane, int pr) { // pole w postaci 0 i 1 dla programowania ruchu, gdzie 0 - czarny kwadrat, a 1 - biały
+        int i, j;
+
+	double pp = (((double)pr)/100.0) * ((((double)dane->k))*(((double)dane->w)));
+
+	int s = 0;
+	int h = (int)pp;
+
+	while(s != h){
+        	for( i = 0; i < dane->w; i++) {
+                         for(j = 0; j < dane->k; j++) {
+				int r = randomp();
+	
+				if(s == h)
+					break;
+				if(dane->v[i][j] != 1){
+                              		dane->v[i][j] = r;  
+					if(r == 1)
+					{
+						s++;
+					}
+				}
+				
+                         }
+                 }
+	}
+}
+
+	
+void ppole(Pole *dane, int pp, FILE *out) {
 	int i, j;
+	int ill = dane->il;
 	int *idi, *idj; // wskażnik dla i oraz j ( id i ) itd.
 	printf(ANSI_GREEN_TEXT "\u250C");
 	for (i = 0; i < dane->k; i++) {
@@ -33,14 +72,24 @@ void ppole(Pole *dane) {
 				j++;
 				idi = &i;
 				idj = &j;
-				move(dane);
+				move(dane, out, pp);
 				goto next;		
 			} else {
 				if (dane->v[i][j] == 0) {	
 					printf(ANSI_BACKGROUND_BLACK " "ANSI_RESET ANSI_GREEN_TEXT );
+					
+					if(pp == ill - 1)
+					{
+						fprintf(out, "1");
+					}
 				}
 				else if (dane->v[i][j] == 1) {
-					 printf(ANSI_BACKGROUND_WHITE " "ANSI_RESET ANSI_GREEN_TEXT ); 
+					 printf(ANSI_BACKGROUND_WHITE " "ANSI_RESET ANSI_GREEN_TEXT );
+					if(pp == ill - 1)
+                                        {
+                                                fprintf(out, "1");
+                                        }
+ 
 				}
 				else {
 					fprintf(stderr, "Błąd w macierzy");
@@ -48,21 +97,41 @@ void ppole(Pole *dane) {
 			}
 		}
 		printf(ANSI_GREEN_TEXT "\u2502\n");
+		if(pp == ill - 1)
+                {
+                	fprintf(out, "\n");
+               	}
+
 	}
 	next: {
 		      for (j = *idj; j < dane->k; j++) {
 			      i = *idi;
 			      if (dane->v[i][j] == 0) {
 				      printf(ANSI_GREEN_TEXT ANSI_BACKGROUND_BLACK " "ANSI_RESET ANSI_GREEN_TEXT );
+					if(pp == ill - 1)
+                                        {
+                                                fprintf(out, "0");
+                                        }
+
+					
 			      }
 			      else if (dane->v[i][j] == 1) {
 				      printf(ANSI_GREEN_TEXT ANSI_BACKGROUND_WHITE " "ANSI_RESET ANSI_GREEN_TEXT );
+					if(pp == ill - 1)
+                                        {
+                                                fprintf(out, "1");
+                                        }
 			      }
 			      else {
 				      fprintf(stderr, "Błąd w macierzy");
 			      }
 		      }
 		      printf(ANSI_GREEN_TEXT "\u2502\n");
+			if(pp == ill - 1)
+       	                {
+                        	fprintf(out, "\n");
+                        }
+
 		      i++;
 		      idi = &i;
 	        for (i = *idi; i < dane->w; i++) {
@@ -70,15 +139,29 @@ void ppole(Pole *dane) {
 			for (j = 0; j < dane->k; j++) {
 				if (dane->v[i][j] == 0) {
 					printf(ANSI_BACKGROUND_BLACK " "ANSI_RESET);
+					if(pp == ill - 1)
+                                        {
+                                                fprintf(out, "0");
+                                        }
+
 					}
 				else if (dane->v[i][j] == 1) {
 					printf(ANSI_BACKGROUND_WHITE " "ANSI_RESET);
+					if(pp == ill - 1)
+                                        {
+                                                fprintf(out, "1");
+                                        }
 				}
 				else {
 					fprintf(stderr, "Błąd w macierzy");
 				}
 			}
 			printf(ANSI_GREEN_TEXT "\u2502\n");
+			if(pp == ill - 1)
+                        {
+                 	       fprintf(out, "\n");
+                        }
+
 		}
 	      }
 
